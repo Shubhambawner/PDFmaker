@@ -132,7 +132,7 @@ void add
 {
 	string t(path, path.size() - 4, 4);
 	cout << "================" << '\n' << t << '\n' << path << '\n';
-	if (t == ".png") {
+	if (t == ".png" || t==".PNG") {
 		addPNG(path, img, element, page, doc);
 	}
 	if (t == ".jp2") {

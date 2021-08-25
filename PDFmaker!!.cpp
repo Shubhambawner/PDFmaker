@@ -1,12 +1,9 @@
 #include"myUtility.h"
-
+#include<iostream>
+using namespace std;
 namespace fs = std::filesystem;
 
-using namespace pdftron;
-using namespace Common;
-using namespace SDF;
-using namespace PDF;
-using namespace std;
+
 
 int main()
 {
@@ -15,7 +12,7 @@ int main()
 	WhoamI();
 	int ret = 0;
 	// Relative path to the folder containing test files.
-	string input_path = "../Images_Tray/";
+	string input_path = "Images_Tray/";
 	string output_path = "C:/z_PDFmaker!!/";
 
 	pen.setColor(grey);
@@ -23,16 +20,55 @@ int main()
 	ifstream file(fname.c_str());
 	if (!file.good()) {
 		system("mkdir\\z_PDFmaker!!");
-		cout << "So, find your output files there!!\n";
+		cout << "So, find your output files there!!\n\n";
 	}
-	/*  
-	fname = "../Images_Tray";
-	ifstream file(fname.c_str());
-	if (!file.good()) {
-		system("cd ../");
-		system("mkdir\\Images_Tray");
-		cred("The Images_Tray seems missing, no worries, it has been re-created outside present folder, please put all images there\n");
-	}*/
+
+	string Current_working_directory = (fs::current_path()).string() ;
+
+	bool imgtray = false;
+	
+	for (const auto& entry : fs::directory_iterator(Current_working_directory)) {
+		//cout << (entry.path()).string() << endl;
+		if ((entry.path()).string() == Current_working_directory+"\\Images_Tray") {
+			imgtray = true;
+			//cout << "image tray located" << endl;
+			
+		}
+	}
+	
+	if (!imgtray) {
+		system("mkdir Images_Tray");
+		pen.note("OOPs!! The Images_Tray seems missing, no worries! \nIt has been re-created inside present folder as:\n"); 
+		pen.cgreen(Current_working_directory + "\\Images_Tray  \nBut, please paste all images there before proceeding!!\n"  );
+		pen.note("please paste all images on above path and then press enter");
+		string j = "";
+		getline(cin, j);
+	}
+	else {
+		pen.setColor(grey);
+		cout << "images will be picked up from image tray at:\n" << Current_working_directory <<endl;
+	}
+	int numImages = 0;
+	while(numImages==0)
+	{
+		for (const auto& entry : fs::directory_iterator(Current_working_directory + "\\Images_Tray")) {
+			string path = (entry.path()).string();
+			string t(path, path.size() - 4, 4);
+			if(t==".png" || t==".jp2" || t==".PNG" || t=="jpeg")
+			numImages++;
+		}
+		if (numImages <= 0) {
+			pen.cred("OOPs!! The Images_Tray at \n" + Current_working_directory + "\\Images_Tray is empty,");
+			pen.note("\nplease paste all images on above path and then press enter");
+			string j = "";
+			getline(cin, j);
+		}
+	}
+	//fname = "Images_Tray";
+	//ifstream gfile(fname.c_str());
+	
+	
+		
 	string name;
 	pen.note("\n\n\t****  images to pdf converter  ******\n\n\n");
 
