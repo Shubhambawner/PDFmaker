@@ -2,7 +2,8 @@
 offline images to pdf converter, binds your jpeg, png, jp2 images to a single pdf document.
 
 # To edit:
-may download zip, open PDFmaker!!.sln inside folder PDFmaker!! with visual studio-2019
+may download zip, open PDFmaker!!.sln inside folder PDFmaker!! with visual studio-2019 
+#
 visual studio project configuration:
 build mode: release; language: C++17; use multi-byte character set.
 configuration properties: platform x64, configuration releae(default)
